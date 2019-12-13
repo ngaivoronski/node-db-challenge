@@ -5,6 +5,7 @@ module.exports = {
     getProjects,
     getProjectById,
     getProjectTasks,
+    getResourcesForProject,
     addProject,
 }
 
@@ -27,6 +28,14 @@ function getProjectTasks(projectId) {
     knex.raw(`(case when tasks.completed = 0 then 'false' else 'true' end) as completed`))
     .join("projects", "tasks.project_id", "=", "projects.id")
     .where("tasks.project_id", "=", projectId);
+}
+
+function getResourcesForProject(id) {
+    return db('resources')
+    .select("resources.id", "resources.name", "resources.description")
+    .join("resources_to_projects","resources.id", "=", "resources_to_projects.resource_id")
+    .join("projects", "resources_to_projects.project_id", "=", "projects.id")
+    .where("projects.id", "=", id)
 }
 
 function addProject(projData) {

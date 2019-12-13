@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// get project by id
+// get project by id and detailed description
 router.get('/:id', (req, res) => {
     const { id } = req.params;
     let projectData = {};
@@ -27,8 +27,16 @@ router.get('/:id', (req, res) => {
             Projects.getProjectTasks(id)
                 .then(tasks => {
                     if (tasks.length) {
-                        projectData = {...proj, tasks: tasks}
-                        res.json(projectData);
+                        Projects.getResourcesForProject(id)
+                            .then(resources => {
+                                if (resources.length) {
+                                    projectData = {...proj, tasks: tasks, resources: resources}
+                                    res.json(projectData);
+                                } else {
+                                    projectData = {...proj, tasks: tasks}
+                                    res.json(projectData);
+                                }
+                            })
                     } else {
                         res.json(proj);
                     }
@@ -41,31 +49,6 @@ router.get('/:id', (req, res) => {
         res.status(500).json({ message: 'Failed to get the project.' });
     });
 });
-
-// router.get('/:id', (req, res) => {
-//     const { id } = req.params;
-//     let recipeData = {};
-
-//     Recipes.getRecipeById(id)
-//     .then(recipe => {
-//         if (recipe) {
-//             Recipes.getInstructions(id)
-//                 .then(steps => {
-//                     if (steps.length) {
-//                         recipeData = {...recipe, instructions: steps}
-//                         res.json(recipeData);
-//                     } else {
-//                         res.json(recipe);
-//                     }
-//             })
-//         } else {
-//             res.status(404).json({ message: 'Could not find recipe with that id.' })
-//         }
-//     })
-//     .catch(err => {
-//         res.status(500).json({ message: 'Failed to get the recipe.' });
-//     });
-// });
 
 // Add new project
 router.post('/', (req, res) => {

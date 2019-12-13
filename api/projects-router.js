@@ -19,11 +19,20 @@ router.get('/', (req, res) => {
 // get project by id
 router.get('/:id', (req, res) => {
     const { id } = req.params;
+    let projectData = {};
 
     Projects.getProjectById(id)
     .then(proj => {
         if (proj) {
-            res.json(proj);
+            Projects.getProjectTasks(id)
+                .then(tasks => {
+                    if (tasks.length) {
+                        projectData = {...proj, tasks: tasks}
+                        res.json(projectData);
+                    } else {
+                        res.json(proj);
+                    }
+            })
         } else {
             res.status(404).json({ message: 'Could not find the project with that id.' })
         }

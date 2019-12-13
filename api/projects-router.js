@@ -84,5 +84,19 @@ router.post('/:id/tasks', (req, res) => {
     });
 });
 
+// Assign resource to task
+router.post('/:id/resources', (req, res) => {
+    const resource_id = req.body.resource_id;
+    const project_id = req.params.id; 
+
+    Projects.assignResourceToProject(resource_id, project_id)
+    .then(project => {
+        res.status(201).json(project);
+    })
+    .catch (err => {
+        res.status(500).json({ message: 'Failed to create new project.' });
+    });
+});
+
 
 module.exports = router;

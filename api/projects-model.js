@@ -7,6 +7,7 @@ module.exports = {
     getProjectTasks,
     getResourcesForProject,
     addProject,
+    assignResourceToProject,
 }
 
 function getProjects() {
@@ -45,4 +46,14 @@ function addProject(projData) {
             const [id] = ids;
             return getProjectById(id);
         })
+}
+
+function assignResourceToProject(resource_id, project_id) {
+    const resourceAssignment = {resource_id: resource_id, project_id: project_id}
+
+    return db("resources_to_projects")
+    .insert(resourceAssignment)
+    .then(assignmentIds => {
+        return getProjectById(project_id);
+    })
 }

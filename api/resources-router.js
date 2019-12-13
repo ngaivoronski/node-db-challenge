@@ -4,6 +4,7 @@ const Resources = require('./resources-model');
 
 const router = express.Router();
 
+// get list of resources
 router.get('/', (req, res) => {
     Resources.getResources()
     .then(resources => {
@@ -14,6 +15,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// get specific resource
 router.get('/:id', (req, res) => {
     const { id } = req.params;
 
@@ -30,6 +32,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
+// add a resource
 router.post('/', (req, res) => {
     const rescData = req.body;
 
@@ -41,6 +44,7 @@ router.post('/', (req, res) => {
         res.status(500).json({ message: 'Failed to create new resource.' });
     });
 });
+
 
 
 

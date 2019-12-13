@@ -1,12 +1,14 @@
 const express = require('express');
 
-// const RecipesRouter = require('./api/recipes-router');
-// const IngredientsRouter = require('./api/ingredients-router');
+const ProjectsRouter = require('./api/projects-router');
+const TasksRouter = require('./api/tasks-router');
+const ResourcesRouter = require('./api/resources-router');
 
 const server = express();
 
 server.use(express.json());
-// server.use('/api/recipes', RecipesRouter);
-// server.use('/api/ingredients', IngredientsRouter);
+server.use('/api/projects', ProjectsRouter);
+server.use('/api/tasks', TasksRouter);
+server.use('/api/resources', ResourcesRouter);
 
 module.exports = server;
